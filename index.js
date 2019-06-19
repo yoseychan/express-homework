@@ -23,13 +23,23 @@ connection.connect();
 connection.query('SELECT * FROM meow', function (err, data) {
     if (err) throw err
 
-    app.get('/meow/', function(req, res) {
+    app.get('/meow', function(req, res) {
         var users = "";
         for (let i = 0; i < data.length; i++){
             users += data[i].name +  ' ';
         }
         res.send(users);
     })
+})
+
+connection.query('SELECT * FROM meow', function(err, data){
+    if (err) throw err 
+
+    for (let i=0; i < data.length; i++) {
+        app.get('/meow/' + data[i].id, function(req, res) {
+            res.send(data[i].name);
+        })
+    }
 })
 
 connection.end();
